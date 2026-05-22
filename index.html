@@ -1,0 +1,415 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bzone PDF Maker | Smart Handwriting & PDF Converter</title>
+    <!-- Outfit Font for Modern and Readable Typography -->
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+    <!-- Lucide Icons for Premium Minimalist Glyphs -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <!-- Markdown Parser & Sanitizer -->
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/dompurify@3.0.8/dist/purify.min.js"></script>
+</head>
+<body>
+    <!-- Animated Glowing Background Blobs -->
+    <div class="background-elements">
+        <div class="blob blob-1"></div>
+        <div class="blob blob-2"></div>
+        <div class="blob blob-3"></div>
+    </div>
+
+    <!-- Floating Frosted Glass Header -->
+    <header class="app-header">
+        <div class="header-container">
+            <div class="logo">
+                <i data-lucide="sparkles" class="logo-icon"></i>
+                <span class="logo-text">Bzone PDF Maker</span>
+            </div>
+            <div class="header-nav">
+                <span class="status-badge">
+                    <span class="badge-dot"></span>
+                    <span>AI Engine Online</span>
+                </span>
+            </div>
+        </div>
+    </header>
+
+    <main class="container">
+        <!-- Hero Section with Clear Value Prop -->
+        <header class="hero-header">
+            <h1>Create Beautiful Documents</h1>
+            <p>Convert messy handwriting, scan files, or edit PDFs into clean digital Word and PDF files instantly.</p>
+        </header>
+
+        <!-- Main Dock-Style Navigation Tabs -->
+        <nav class="app-tabs" aria-label="Tool selection">
+            <button class="tab-btn active" data-tab="ocr" id="tab-ocr">
+                <i data-lucide="edit-3" class="tab-icon"></i> 
+                <span>Convert Handwriting</span>
+            </button>
+            <button class="tab-btn" data-tab="organizer" id="tab-organizer">
+                <i data-lucide="layers" class="tab-icon"></i> 
+                <span>Combine & Edit PDFs</span>
+            </button>
+            <button class="tab-btn" data-tab="ai" id="tab-ai">
+                <i data-lucide="brain-circuit" class="tab-icon"></i> 
+                <span>AI Summarize & Translate</span>
+            </button>
+            <button class="tab-btn" data-tab="security" id="tab-security">
+                <i data-lucide="lock" class="tab-icon"></i> 
+                <span>Lock & Unlock PDFs</span>
+            </button>
+        </nav>
+
+        <!-- Workspaces Container -->
+        <div id="input-container" class="input-container">
+            <!-- Tab 1: Convert Handwriting -->
+            <div id="ocr-workspace" class="workspace-pane">
+                <div class="workspace-grid">
+                    <section class="settings-section">
+                        <div class="glass-panel settings-panel">
+                            <div class="panel-header">
+                                <i data-lucide="sliders" class="header-icon purple-glow"></i>
+                                <h3>Setup Options</h3>
+                            </div>
+                            <div class="settings-controls">
+                                <div class="control-group">
+                                    <label for="doc-type-select"><i data-lucide="file-text" class="label-icon"></i> Document Style</label>
+                                    <select id="doc-type-select" class="form-control">
+                                        <option value="general">Standard Notes</option>
+                                        <option value="meeting">Meeting Minutes</option>
+                                        <option value="study">Study & Lecture Notes</option>
+                                        <option value="todo">To-Do Task List</option>
+                                        <option value="receipt">Receipt & Invoice Table</option>
+                                    </select>
+                                    <span class="help-text">Choose a style template to format the output text.</span>
+                                </div>
+                                
+                                <div class="control-group">
+                                    <label for="custom-instructions"><i data-lucide="message-square" class="label-icon accent-orange"></i> Instructions for AI (Optional)</label>
+                                    <textarea id="custom-instructions" class="form-control text-area" placeholder="e.g. Make it brief, highlight names in bold, add emojis..."></textarea>
+                                    <span class="help-text">Give specific formatting rules to the AI.</span>
+                                </div>
+
+                                <div class="control-group">
+                                    <label for="ocr-format-select"><i data-lucide="file-check" class="label-icon text-cyan"></i> Save As Format</label>
+                                    <select id="ocr-format-select" class="form-control format-select">
+                                        <option value="docx" selected>Word Document (.docx)</option>
+                                        <option value="pdf">PDF Document (.pdf)</option>
+                                        <option value="md">Plain Text (.md)</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+
+                    <section class="upload-section">
+                        <div class="glass-panel upload-panel">
+                            <div class="panel-header">
+                                <i data-lucide="upload" class="header-icon purple-glow"></i>
+                                <h3>Upload File</h3>
+                            </div>
+                            <div id="drop-zone" class="drop-zone">
+                                <div class="upload-icon-container">
+                                    <i data-lucide="upload-cloud" class="upload-icon"></i>
+                                </div>
+                                <h2>Drag and drop your file here</h2>
+                                <p>Supports: Images (PNG, JPG, WEBP), PDFs, Word (DOCX, DOC), and Text documents (TXT)</p>
+                                <span class="or-separator">or</span>
+                                <label for="file-input" class="btn-primary">Browse Files</label>
+                                <input type="file" id="file-input" accept="image/*,.pdf,.doc,.docx,.txt" hidden>
+                            </div>
+                        </div>
+                    </section>
+                </div>
+            </div>
+
+            <!-- Tab 2: Combine & Edit PDFs -->
+            <div id="organizer-workspace" class="workspace-pane hidden">
+                <div class="workspace-grid">
+                    <section class="settings-section">
+                        <div class="glass-panel settings-panel">
+                            <div class="panel-header">
+                                <i data-lucide="sliders" class="header-icon blue-glow"></i>
+                                <h3>Choose Action</h3>
+                            </div>
+                            <div class="settings-controls">
+                                <div class="control-group">
+                                    <label for="org-action-select"><i data-lucide="wrench" class="label-icon"></i> Action</label>
+                                    <select id="org-action-select" class="form-control">
+                                        <option value="merge" selected>Combine PDFs (Merge)</option>
+                                        <option value="split">Extract Pages (Split)</option>
+                                        <option value="rotate">Rotate Pages</option>
+                                    </select>
+                                </div>
+                                
+                                <div class="control-group" id="split-settings-group" style="display: none;">
+                                    <label for="split-pages-input"><i data-lucide="hash" class="label-icon"></i> Pages to Keep</label>
+                                    <input type="text" id="split-pages-input" class="form-control" placeholder="e.g. 1, 2-5, 8">
+                                    <span class="help-text">Type page numbers or page ranges separated by commas.</span>
+                                </div>
+                                
+                                <div class="control-group" id="rotate-settings-group" style="display: none;">
+                                    <label for="rotate-deg-select"><i data-lucide="rotate-cw" class="label-icon"></i> Rotate Angle</label>
+                                    <select id="rotate-deg-select" class="form-control">
+                                        <option value="90">90° Clockwise</option>
+                                        <option value="180">180° Half Turn</option>
+                                        <option value="270">270° Counter-Clockwise</option>
+                                    </select>
+                                </div>
+
+                                <div class="control-group">
+                                    <label for="org-format-select"><i data-lucide="file-check" class="label-icon text-cyan"></i> Save As Format</label>
+                                    <select id="org-format-select" class="form-control format-select">
+                                        <option value="pdf" selected>PDF Document (.pdf)</option>
+                                        <option value="docx">Word Document (.docx)</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+
+                    <section class="upload-section">
+                        <div class="glass-panel upload-panel">
+                            <div class="panel-header">
+                                <i data-lucide="upload" class="header-icon blue-glow"></i>
+                                <h3>Upload PDFs</h3>
+                            </div>
+                            <div id="org-drop-zone" class="drop-zone">
+                                <div class="upload-icon-container">
+                                    <i data-lucide="files" class="upload-icon"></i>
+                                </div>
+                                <h2 id="org-upload-title">Drag and drop PDF files here to combine</h2>
+                                <p>Upload the PDF documents you want to combine or edit.</p>
+                                <span class="or-separator">or</span>
+                                <label for="org-file-input" class="btn-primary" id="org-browse-label">Browse Files</label>
+                                <input type="file" id="org-file-input" accept=".pdf" hidden>
+                                
+                                <div id="selected-files-list" class="selected-files-list hidden"></div>
+                            </div>
+                            <div class="action-btn-container hidden" id="org-action-container" style="margin-top: 1rem;">
+                                <button id="btn-run-organizer" class="btn-primary btn-glow-blue"><i data-lucide="play" class="btn-icon"></i> Start Processing</button>
+                            </div>
+                        </div>
+                    </section>
+                </div>
+            </div>
+
+            <!-- Tab 3: AI Summarize & Translate -->
+            <div id="ai-workspace" class="workspace-pane hidden">
+                <div class="workspace-grid">
+                    <section class="settings-section">
+                        <div class="glass-panel settings-panel">
+                            <div class="panel-header">
+                                <i data-lucide="sliders" class="header-icon purple-glow"></i>
+                                <h3>Choose AI Tool</h3>
+                            </div>
+                            <div class="settings-controls">
+                                <div class="control-group">
+                                    <label for="ai-action-select"><i data-lucide="sparkles" class="label-icon"></i> AI Action</label>
+                                    <select id="ai-action-select" class="form-control">
+                                        <option value="summarize" selected>Summarize Document</option>
+                                        <option value="translate">Translate Document</option>
+                                    </select>
+                                </div>
+                                
+                                <div class="control-group" id="translate-lang-group" style="display: none;">
+                                    <label for="translate-lang-select"><i data-lucide="languages" class="label-icon"></i> Target Language</label>
+                                    <select id="translate-lang-select" class="form-control">
+                                        <option value="Spanish">Spanish</option>
+                                        <option value="French">French</option>
+                                        <option value="German">German</option>
+                                        <option value="Chinese">Chinese</option>
+                                        <option value="Hindi">Hindi</option>
+                                        <option value="Telugu">Telugu</option>
+                                        <option value="Japanese">Japanese</option>
+                                        <option value="Arabic">Arabic</option>
+                                    </select>
+                                </div>
+                                
+                                <div class="control-group">
+                                    <label for="ai-instructions"><i data-lucide="message-square" class="label-icon accent-orange"></i> Instructions for AI (Optional)</label>
+                                    <textarea id="ai-instructions" class="form-control text-area" placeholder="e.g. Keep it key takeaways only, use bullet points, write in professional tone..."></textarea>
+                                    <span class="help-text">Tell the AI how to format, summarize, or translate.</span>
+                                </div>
+
+                                <div class="control-group">
+                                    <label for="ai-format-select"><i data-lucide="file-check" class="label-icon text-cyan"></i> Save As Format</label>
+                                    <select id="ai-format-select" class="form-control format-select">
+                                        <option value="docx" selected>Word Document (.docx)</option>
+                                        <option value="pdf">PDF Document (.pdf)</option>
+                                        <option value="md">Plain Text (.md)</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+
+                    <section class="upload-section">
+                        <div class="glass-panel upload-panel">
+                            <div class="panel-header">
+                                <i data-lucide="upload" class="header-icon purple-glow"></i>
+                                <h3>Upload PDF Document</h3>
+                            </div>
+                            <div id="ai-drop-zone" class="drop-zone">
+                                <div class="upload-icon-container">
+                                    <i data-lucide="file-text" class="upload-icon"></i>
+                                </div>
+                                <h2>Drag and drop PDF document here</h2>
+                                <p>Upload a PDF file you want the AI to summarize or translate.</p>
+                                <span class="or-separator">or</span>
+                                <label for="ai-file-input" class="btn-primary">Browse Files</label>
+                                <input type="file" id="ai-file-input" accept=".pdf" hidden>
+                            </div>
+                        </div>
+                    </section>
+                </div>
+            </div>
+
+            <!-- Tab 4: Lock & Unlock PDFs -->
+            <div id="security-workspace" class="workspace-pane hidden">
+                <div class="workspace-grid">
+                    <section class="settings-section">
+                        <div class="glass-panel settings-panel">
+                            <div class="panel-header">
+                                <i data-lucide="shield" class="header-icon red-glow"></i>
+                                <h3>Setup Password</h3>
+                            </div>
+                            <div class="settings-controls">
+                                <div class="control-group">
+                                    <label for="sec-action-select"><i data-lucide="sliders" class="label-icon"></i> Security Action</label>
+                                    <select id="sec-action-select" class="form-control">
+                                        <option value="protect" selected>Lock PDF (Add Password)</option>
+                                        <option value="unlock">Unlock PDF (Remove Password)</option>
+                                    </select>
+                                </div>
+                                
+                                <div class="control-group">
+                                    <label for="sec-password-input"><i data-lucide="key" class="label-icon"></i> Password</label>
+                                    <input type="password" id="sec-password-input" class="form-control" placeholder="Enter password">
+                                    <span class="help-text">Enter the password to lock or unlock your PDF.</span>
+                                </div>
+
+                                <div class="control-group">
+                                    <label for="sec-format-select"><i data-lucide="file-check" class="label-icon text-cyan"></i> Save As Format</label>
+                                    <select id="sec-format-select" class="form-control format-select">
+                                        <option value="pdf" selected>PDF Document (.pdf)</option>
+                                        <option value="docx">Word Document (.docx)</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+
+                    <section class="upload-section">
+                        <div class="glass-panel upload-panel">
+                            <div class="panel-header">
+                                <i data-lucide="upload" class="header-icon red-glow"></i>
+                                <h3>Upload PDF Document</h3>
+                            </div>
+                            <div id="sec-drop-zone" class="drop-zone">
+                                <div class="upload-icon-container">
+                                    <i data-lucide="file-lock-2" class="upload-icon"></i>
+                                </div>
+                                <h2>Drag and drop PDF document here</h2>
+                                <p>Upload a PDF file to lock or unlock.</p>
+                                <span class="or-separator">or</span>
+                                <label for="sec-file-input" class="btn-primary">Browse Files</label>
+                                <input type="file" id="sec-file-input" accept=".pdf" hidden>
+                            </div>
+                        </div>
+                    </section>
+                </div>
+            </div>
+        </div>
+
+        <!-- Processing Status Block -->
+        <section class="upload-status-section">
+            <div id="upload-status" class="status-container hidden">
+                <div class="loader"></div>
+                <p id="status-text">Processing document...</p>
+            </div>
+        </section>
+
+        <!-- Unified Interactive Results & Editor Pane -->
+        <section id="result-section" class="result-section hidden">
+            <div class="glass-panel result-panel">
+                <div class="result-header">
+                    <div class="result-title">
+                        <i data-lucide="check-circle" class="success-icon"></i>
+                        <h3>Conversion Complete!</h3>
+                    </div>
+                    
+                    <div class="result-header-actions">
+                        <!-- Editor/Preview Tabs for Editable Output -->
+                        <div class="result-tabs" id="result-tabs-container">
+                            <button class="result-tab-btn active" id="btn-tab-edit">
+                                <i data-lucide="edit-2"></i> <span>Edit Text</span>
+                            </button>
+                            <button class="result-tab-btn" id="btn-tab-preview">
+                                <i data-lucide="eye"></i> <span>Visual Preview</span>
+                            </button>
+                        </div>
+                        <button id="btn-reset-workflow" class="btn-secondary btn-reset-workflow">
+                            <i data-lucide="rotate-ccw"></i> <span>Convert Another</span>
+                        </button>
+                    </div>
+                </div>
+
+                <div class="editor-instructions" id="editor-instructions-msg">
+                    <i data-lucide="info" class="info-icon"></i>
+                    <span>You can edit the content directly below. Your edits will be saved when you download!</span>
+                </div>
+
+                <!-- Textarea Editor for Editing Content -->
+                <div class="editor-container" id="editor-wrapper">
+                    <textarea id="result-editor" class="result-editor-textarea" placeholder="Your editable output will load here..."></textarea>
+                </div>
+
+                <!-- Rendered Markdown Viewer -->
+                <div id="preview-text" class="preview-text hidden">
+                    <!-- Text preview will be injected here -->
+                </div>
+
+                <!-- Action Download Buttons -->
+                <div class="result-actions">
+                    <button id="btn-download-primary" class="btn-primary btn-large">
+                        <i data-lucide="download" id="primary-dl-icon"></i> 
+                        <span id="primary-dl-text">Download Document</span>
+                    </button>
+                    <div class="secondary-actions">
+                        <button id="btn-download-pdf" class="btn-secondary">
+                            <i data-lucide="file-type-2"></i> Download PDF
+                        </button>
+                        <button id="btn-download-docx" class="btn-secondary">
+                            <i data-lucide="file-text"></i> Download Word (Docx)
+                        </button>
+                        <button id="btn-download-md" class="btn-secondary">
+                            <i data-lucide="file-code"></i> Download Text (Md)
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer class="app-footer">
+        <div class="footer-container">
+            <p>&copy; 2026 Bzone PDF Maker. Simple. Smart. Secure.</p>
+            <div class="footer-meta">
+                <span>Optimized by <i data-lucide="cpu" class="footer-icon accent-orange"></i> Gemini 2.5 Flash</span>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Core App Logic -->
+    <script src="app.js"></script>
+    <script>
+        // Init icons
+        lucide.createIcons();
+    </script>
+</body>
+</html>
