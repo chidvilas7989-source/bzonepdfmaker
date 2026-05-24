@@ -129,11 +129,11 @@ body {
     gap: 0.75rem;
 }
 
-.logo-icon {
-    width: 26px;
-    height: 26px;
-    color: var(--primary);
-    filter: drop-shadow(0 0 8px rgba(99, 102, 241, 0.3));
+.logo-img {
+    height: 36px;
+    width: auto;
+    object-fit: contain;
+    filter: drop-shadow(0 0 8px rgba(99, 102, 241, 0.2));
 }
 
 .logo-text {
