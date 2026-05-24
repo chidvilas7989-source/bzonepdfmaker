@@ -202,13 +202,8 @@ body {
 /* Main Navigation Tabs Styling */
 .app-tabs {
     display: flex;
-    justify-content: flex-start;
-    overflow-x: auto;
-    white-space: nowrap;
-    -webkit-overflow-scrolling: touch;
-    scroll-snap-type: x mandatory;
-    scrollbar-width: none; /* Hide scrollbar Firefox */
-    gap: 0.5rem;
+    flex-direction: column;
+    gap: 0.25rem;
     background: rgba(255, 255, 255, 0.75);
     border: 1px solid rgba(15, 23, 42, 0.06);
     backdrop-filter: blur(20px);
@@ -224,22 +219,21 @@ body {
 }
 
 .tab-btn {
-    flex: 0 0 auto;
-    scroll-snap-align: start;
     display: inline-flex;
     align-items: center;
-    justify-content: center;
-    gap: 0.65rem;
-    padding: 0.8rem 1.2rem;
+    justify-content: flex-start;
+    gap: 1rem;
+    padding: 1rem 1.2rem;
     background: transparent;
     border: none;
     border-radius: 15px;
-    color: var(--text-muted);
+    color: var(--text-soft);
     font-family: var(--font-family);
-    font-size: 0.9rem;
+    font-size: 1rem;
     font-weight: 600;
     cursor: pointer;
     transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    width: 100%;
 }
 
 .tab-btn:hover {
@@ -303,12 +297,15 @@ body {
         grid-template-columns: 400px 1fr;
     }
     .app-tabs {
+        flex-direction: row;
         justify-content: space-between;
     }
     .tab-btn {
         flex: 1;
+        justify-content: center;
         font-size: 0.95rem;
         padding: 0.9rem 1rem;
+        width: auto;
     }
 }
 
@@ -1033,6 +1030,12 @@ select.form-control option {
     .result-editor-textarea, .preview-text {
         min-height: 280px;
         padding: 1rem;
+    }
+    .footer-container {
+        flex-direction: column;
+        gap: 0.75rem;
+        text-align: center;
+        justify-content: center;
     }
 }
 
