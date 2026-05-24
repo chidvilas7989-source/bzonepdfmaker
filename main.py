@@ -391,6 +391,10 @@ def serve_css():
 def serve_js():
     return FileResponse("app.js")
 
+@app.get("/logo.png")
+def serve_logo():
+    return FileResponse("logo.png")
+
 @app.get("/api/status")
 def read_root():
     return {"status": "ok", "message": "Scribe Backend is running"}
